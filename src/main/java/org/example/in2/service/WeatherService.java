@@ -7,7 +7,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -47,6 +50,16 @@ public class WeatherService {
             model.setCityName(city);
             model.setTemperature(response.getMain().getTemp());
             model.setFetchedAt(LocalDateTime.now());
+
+            long timeStamp = response.getDt();
+            int offset = response.getTimezone();
+            Instant instant = Instant.ofEpochSecond(timeStamp);
+
+            LocalDateTime localTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofTotalSeconds(offset));
+            System.out.println("Local time for " + city + ": " + localTime);
+
+            model.setLocalTime(localTime);
+
             model.setStatus(WeatherModel.Status.SUCCESS);
 
             save(model);

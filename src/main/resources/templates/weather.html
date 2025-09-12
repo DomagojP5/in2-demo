@@ -12,6 +12,7 @@
         <th>City</th>
         <th>Temperature (°C)</th>
         <th>Fetched At</th>
+        <th>Local Time</th>
         <th>Status</th>
     </tr>
     </thead>
@@ -19,7 +20,8 @@
     <tr th:each="w : ${weathers}">
         <td th:text="${w.getCityName()}"></td>
         <td th:text="${w.getTemperature()}"></td>
-        <td th:text="${#temporals.format(w.getFetchedAt(), 'dd-MM-yyyy HH:mm')}"></td>
+        <td th:text="${#temporals.format(w.getFetchedAt(), 'HH:mm dd.MM.yyyy')}"></td>
+        <td th:text="${#temporals.format(w.getLocalTime(), 'HH:mm dd.MM.yyyy')}"></td>
         <td th:text="${w.getStatus()}"></td>
     </tr>
     </tbody>

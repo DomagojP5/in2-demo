@@ -8,6 +8,8 @@ public class WeatherApiResponse {
 
     //main object contains temp, pressure, humidity...
     private Main main;
+    private long dt;
+    private int timezone;
 
     public static class Main {
         private Double temp;
@@ -18,4 +20,11 @@ public class WeatherApiResponse {
 
     public Main getMain() { return main; }
     public void setMain(Main main) { this.main = main; }
+
+
+    public long getDt() { return dt; }
+    public void setDt(long dt) { this.dt = dt; }
+
+    public int getTimezone() { return timezone; }
+    public void setTimezone(int timezone) { this.timezone = timezone; }
 }

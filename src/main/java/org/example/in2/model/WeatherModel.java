@@ -9,12 +9,10 @@ public class WeatherModel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private String cityName;
-
     private Double temperature;
-
     private LocalDateTime fetchedAt;
+    private LocalDateTime localTime;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -23,10 +21,11 @@ public class WeatherModel {
 
     }
 
-    public WeatherModel(String cityName, Double temperature, LocalDateTime fetchedAt, Status status) {
+    public WeatherModel(String cityName, Double temperature, LocalDateTime fetchedAt, LocalDateTime localTime, Status status) {
         this.cityName = cityName;
         this.temperature = temperature;
         this.fetchedAt = fetchedAt;
+        this.localTime = localTime;
         this.status = status;
     }
 
@@ -60,6 +59,14 @@ public class WeatherModel {
 
     public void setFetchedAt(LocalDateTime fetchedAt) {
         this.fetchedAt = fetchedAt;
+    }
+
+    public LocalDateTime getLocalTime() {
+        return localTime;
+    }
+
+    public void setLocalTime(LocalDateTime localTime) {
+        this.localTime = localTime;
     }
 
     public Status getStatus() {

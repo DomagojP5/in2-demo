@@ -22,10 +22,16 @@ public class In2Application {
     CommandLineRunner init(WeatherService weatherService) {
         return args -> {
             // Add initial cities
-            weatherService.save(new WeatherModel("Zagreb", null, null, WeatherModel.Status.PENDING));
-            weatherService.save(new WeatherModel("London", null, null, WeatherModel.Status.PENDING));
-            weatherService.save(new WeatherModel("New York", null, null, WeatherModel.Status.PENDING));
-            weatherService.save(new WeatherModel("Tokyo", null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Zagreb", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("London", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("New York", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Tokyo", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Rio de Janeiro", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Los Angeles", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Honolulu", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Wellington", null, null, null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("New Delhi", null, null,  null, WeatherModel.Status.PENDING));
+            weatherService.save(new WeatherModel("Moscow", null, null,  null, WeatherModel.Status.PENDING));
         };
     }
 
