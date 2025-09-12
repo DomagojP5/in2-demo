@@ -53,7 +53,7 @@ public class WeatherService {
 
         } catch (Exception e) {
             //handle error
-            
+
             model.setCityName(city);
             model.setFetchedAt(LocalDateTime.now());
             model.setStatus(WeatherModel.Status.FAILURE);
