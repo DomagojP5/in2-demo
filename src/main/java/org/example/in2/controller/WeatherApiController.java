@@ -8,15 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class WeatherController {
+public class WeatherApiController {
 
     private final WeatherService weatherService;
 
-    public WeatherController(WeatherService weatherService) {
+    public WeatherApiController(WeatherService weatherService) {
         this.weatherService = weatherService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/api")
     public List<WeatherModel> getWeather() {
         return weatherService.findAll();
     }
