@@ -1,0 +1,21 @@
+package org.example.in2.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.sun.tools.javac.Main;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class WeatherApiResponse {
+
+    //main object contains temp, pressure, humidity...
+    private Main main;
+
+    public static class Main {
+        private Double temp;
+
+        public Double getTemp() { return temp; }
+        public void setTemp(Double temp) { this.temp = temp; }
+    }
+
+    public Main getMain() { return main; }
+    public void setMain(Main main) { this.main = main; }
+}
