@@ -10,7 +10,6 @@ import org.springframework.web.client.RestTemplate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -39,6 +38,7 @@ public class WeatherService {
     public void fetchAndSaveWeather(String city) {
 
         WeatherModel model = weatherRepository.findByCityName(city).orElse(new WeatherModel());
+        model.setCityName(city);
 
         try {
             //API call
@@ -46,36 +46,45 @@ public class WeatherService {
 
             WeatherApiResponse response = restTemplate.getForObject(url, WeatherApiResponse.class);
 
-            //convert to model
-            model.setCityName(city);
-            model.setTemperature(response.getMain().getTemp());
-            model.setFetchedAt(LocalDateTime.now());
-
-            long timeStamp = response.getDt();
-            int offset = response.getTimezone();
-            Instant instant = Instant.ofEpochSecond(timeStamp);
-
-            LocalDateTime localTime = LocalDateTime.ofInstant(instant, ZoneOffset.ofTotalSeconds(offset));
-            System.out.println("Local time for " + city + ": " + localTime);
-
-            model.setLocalTime(localTime);
-
-            model.setStatus(WeatherModel.Status.SUCCESS);
-
-            save(model);
+            assert response != null;
+            updateModel(model, response);
 
         } catch (Exception e) {
             //handle error
-
-            model.setCityName(city);
-            model.setFetchedAt(LocalDateTime.now());
-            model.setStatus(WeatherModel.Status.FAILURE);
-
-            save(model);
-
-            //throw new RuntimeException(e);
-            System.err.println(e.getMessage());
+            modelError(model, e);
         }
+
+        save(model);
+    }
+
+    public void updateModel(WeatherModel model, WeatherApiResponse response) {
+
+        if (response == null || response.getMain() == null) {
+            modelError(model, new RuntimeException("Response is null"));
+            return;
+        }
+
+        model.setTemperature(response.getMain().getTemp());
+        model.setFetchedAt(LocalDateTime.now());
+
+        LocalDateTime localTime = convertToLocalDateTime(response.getDt(), response.getTimezone());
+        model.setLocalTime(localTime);
+
+        model.setStatus(WeatherModel.Status.SUCCESS);
+    }
+
+    public void modelError(WeatherModel model, Exception e) {
+        model.setTemperature(null);
+        model.setFetchedAt(LocalDateTime.now());
+        model.setLocalTime(null);
+        model.setStatus(WeatherModel.Status.FAILURE);
+
+        System.err.println(e.getMessage());
+    }
+
+    public LocalDateTime convertToLocalDateTime(long timestamp, int offset) {
+        Instant instant = Instant.ofEpochSecond(timestamp);
+        return LocalDateTime.ofInstant(instant, ZoneOffset.ofTotalSeconds(offset));
     }
 
     public void updateAll() {
