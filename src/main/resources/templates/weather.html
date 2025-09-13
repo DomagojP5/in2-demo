@@ -10,7 +10,7 @@
             <thead>
                 <tr>
                     <th>City</th>
-                    <th>Temperature (°C)</th>
+                    <th>Temperature</th>
                     <th>Fetched At</th>
                     <th>Local Time</th>
                     <th>Status</th>
@@ -18,21 +18,28 @@
             </thead>
             <tbody id="weather-table-body">
                 <tr th:each="w : ${weathers}" th:if="${w.status != T(org.example.in2.model.WeatherModel.Status).FAILURE}">
-                    <td th:text="${w.cityName}"></td>
-                    <td th:text="${w.temperature}"></td>
-                    <td th:text="${#temporals.format(w.fetchedAt, 'HH:mm dd.MM.yyyy')}"></td>
-                    <td th:text="${#temporals.format(w.localTime, 'HH:mm dd.MM.yyyy')}"></td>
+                    <td th:text="${w.cityName}" style="text-align:center;"></td>
+                    <td th:text="${w.temperature}" style="text-align:center;"></td>
+                    <td th:text="${#temporals.format(w.fetchedAt, 'HH:mm')}" style="text-align:center;"></td>
+                    <td th:text="${#temporals.format(w.localTime, 'HH:mm')}" style="text-align:center;"></td>
                     <td th:text="${w.status}"></td>
                 </tr>
 
                 <tr th:each="w : ${weathers}" th:if="${w.status == T(org.example.in2.model.WeatherModel.Status).FAILURE}">
-                    <td th:text="${w.cityName}"></td>
+                    <td th:text="${w.cityName}" style="text-align:center;"></td>
                     <td colspan="4" style="color:red; font-weight:bold; text-align:center;">ERROR</td>
                 </tr>
             </tbody>
         </table>
     </body>
         <script>
-            setTimeout(() => location.reload(), 30000);
+            //reload after 2s and then every 30s
+            setTimeout(() => {
+                location.reload()
+
+                setInterval(() => {
+                    location.reload()
+                }, 30000)
+            }, 2000);
         </script>
 </html>
