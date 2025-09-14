@@ -15,3 +15,4 @@ Demo Spring Boot aplikacija koja prikazuje temperature gradova.
 3. Pokrenuti aplikaciju:
    ```bash
    mvn spring-boot:run
+4. Otvoriti aplikaciju u web pregledniku na adresi: http://localhost:8080/
