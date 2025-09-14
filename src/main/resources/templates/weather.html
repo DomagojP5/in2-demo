@@ -32,14 +32,45 @@
             </tbody>
         </table>
     </body>
-        <script>
-            //reload after 2s and then every 30s
-            setTimeout(() => {
-                location.reload()
+    <script>
+        async function fetchWeather() {
+            const response = await fetch("/api");
+            const data = await response.json();
 
-                setInterval(() => {
-                    location.reload()
-                }, 30000)
-            }, 2000);
-        </script>
+            const tableBody = document.getElementById("weather-table-body");
+            tableBody.innerHTML = "";
+
+            data.forEach(w => {
+                let row;
+                if (w.status === "FAILURE") {
+                    row = `<tr>
+                <td style="text-align:center;">${w.cityName}</td>
+                <td colspan="4" style="color:red; font-weight:bold; text-align:center;">ERROR</td>
+            </tr>`;
+                } else {
+                    row = `<tr>
+                <td style="text-align:center;">${w.cityName}</td>
+                <td style="text-align:center;">${w.temperature}</td>
+                <td style="text-align:center;">${formatTime(w.fetchedAt)}</td>
+                <td style="text-align:center;">${formatTime(w.localTime)}</td>
+                <td>${w.status}</td>
+            </tr>`;
+                }
+                tableBody.innerHTML += row;
+            });
+        }
+
+        function formatTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        //fetch 1s after load and every 30s after
+        window.onload = () => {
+            setTimeout(() => {
+                fetchWeather();
+                setInterval(fetchWeather, 30000);
+            }, 1000);
+        };
+    </script>
 </html>
